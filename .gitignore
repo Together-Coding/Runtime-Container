@@ -1,0 +1,5 @@
+.idea
+
+# SSH key used at build time
+toco
+toco.pub
