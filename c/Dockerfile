@@ -1,5 +1,5 @@
-# Ref: https://vsupalov.com/build-docker-image-clone-private-repo-ssh-key/
 FROM ubuntu:22.04 as intermediate
+# Ref: https://vsupalov.com/build-docker-image-clone-private-repo-ssh-key/
 
 RUN apt-get update
 RUN apt-get install git -y
@@ -18,7 +18,7 @@ RUN mkdir -p /runtime-agent
 WORKDIR /runtime-agent
 RUN git init
 RUN git remote add origin git@github.com:Together-Coding/runtime-agent.git
-RUN git fetch origin 412cb56a0b9b00609c1170c7fd822cdc8ab0cb1a
+RUN git fetch origin 92bbfd37d05e06c83318c766890a130e25c565e3
 RUN git reset --hard FETCH_HEAD
 
 FROM gcc:11
@@ -39,12 +39,6 @@ RUN useradd -ms /bin/bash together
 # Make user environments
 RUN mkdir -p /usr/src/app
 
-# Restrict user's permission
-RUN chown -R together:together /usr/src/app
-
-# Configure SSH server
-# TODO: add more security related configures
-
 # Install Runtime-Agent
 RUN mkdir -p /usr/src/agent
 WORKDIR /usr/src/agent
@@ -54,5 +48,6 @@ COPY --from=intermediate /runtime-agent/. /usr/src/agent/
 
 # EXPOSE 22  # ssh is connected through localhost
 # EXPOSE 8989  # public IP is used directly, so 8000 port is used.
+# FIXME: remove `DEBUG` flag
 CMD service ssh start \
     && uvicorn agent:app --host 0.0.0.0 --port 8000
