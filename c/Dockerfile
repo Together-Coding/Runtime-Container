@@ -46,8 +46,15 @@ COPY --from=intermediate /runtime-agent/requirements.txt /usr/src/agent/
 RUN pip3 install --no-cache-dir -r requirements.txt
 COPY --from=intermediate /runtime-agent/. /usr/src/agent/
 
+# Restrict user's permission
+RUN chown -R together:together /usr/src/app
+RUN chmod -R 700 /usr/src/agent
+
+# Configure SSH server
+# TODO: add more security related configures
+
 # EXPOSE 22  # ssh is connected through localhost
 # EXPOSE 8989  # public IP is used directly, so 8000 port is used.
 # FIXME: remove `DEBUG` flag
 CMD service ssh start \
-    && uvicorn agent:app --host 0.0.0.0 --port 8000
+    && DEBUG=1 uvicorn agent:app --host 0.0.0.0 --port 8000
