@@ -18,7 +18,7 @@ RUN mkdir -p /runtime-agent
 WORKDIR /runtime-agent
 RUN git init
 RUN git remote add origin git@github.com:Together-Coding/runtime-agent.git
-RUN git fetch origin 92bbfd37d05e06c83318c766890a130e25c565e3
+RUN git fetch origin e01e4077d368811da6728c787b8559df8d12aa9e
 RUN git reset --hard FETCH_HEAD
 
 FROM gcc:11
