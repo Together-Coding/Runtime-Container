@@ -4,5 +4,5 @@
 
 # Note
 
-- Container services (e.g. AWS ECS) must have an access right to AWS S3 in order 
-  to download `runtime-agent` source code.
+- ~~Container services (e.g. AWS ECS) must have an access right to AWS S3 in order
+  to download `runtime-agent` source code.~~
