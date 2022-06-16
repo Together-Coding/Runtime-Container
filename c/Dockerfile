@@ -18,7 +18,7 @@ RUN mkdir -p /runtime-agent
 WORKDIR /runtime-agent
 RUN git init
 RUN git remote add origin git@github.com:Together-Coding/runtime-agent.git
-RUN git fetch origin e01e4077d368811da6728c787b8559df8d12aa9e
+RUN git fetch origin adedaf66ce68e38146feaa0adc390be6363a1522
 RUN git reset --hard FETCH_HEAD
 
 FROM gcc:11
@@ -57,4 +57,4 @@ RUN chmod -R 700 /usr/src/agent
 # EXPOSE 8989  # public IP is used directly, so 8000 port is used.
 # FIXME: remove `DEBUG` flag
 CMD service ssh start \
-    && DEBUG=1 uvicorn agent:app --host 0.0.0.0 --port 8000
+    && uvicorn agent:app --host 0.0.0.0 --port 8000
