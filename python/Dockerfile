@@ -18,11 +18,15 @@ RUN mkdir -p /runtime-agent
 WORKDIR /runtime-agent
 RUN git init
 RUN git remote add origin git@github.com:Together-Coding/runtime-agent.git
-RUN git fetch origin 72bb15fb1a5fd74d843d69cb7eccaf13d8dfd59c 
+
+# Modify the commit hash on demand
+RUN git fetch origin 72bb15fb1a5fd74d843d69cb7eccaf13d8dfd59c
 RUN git reset --hard FETCH_HEAD
+
 
 FROM python:3.10.4-bullseye
 
+# When building this in Korea, Change APT data sources because the default ones are really slow in most cases.
 RUN cd /etc/apt && sed -i 's/archive.ubuntu.com/ftp.daum.net/g' sources.list
 
 # Install requirements to run services and agent server
@@ -50,10 +54,8 @@ RUN chown -R together:together /usr/src/app
 RUN chmod -R 700 /usr/src/agent
 
 # Configure SSH server
-# TODO: add more security related configures
+# XXX: add more security related configurations.
 
-# EXPOSE 22  # ssh is connected through localhost
-# EXPOSE 8989  # public IP is used directly, so 8000 port is used.
-# FIXME: remove `DEBUG` flag
+# Because public IP is used directly, 8000 port is used and we don't need to expose any port.
 CMD service ssh start \
     && uvicorn agent:app --host 0.0.0.0 --port 8000
